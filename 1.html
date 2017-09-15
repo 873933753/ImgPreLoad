@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+			.box{
+				width: 600px;
+				height: 300px;
+				text-align: center;
+				border: 1px solid red;	
+				padding: 50px;
+				/*display: table-cell;*/
+				/*vertical-align: middle;*/
+				margin: 50px auto;
+			}
+			.btns{
+				text-align: center;
+			}
+			.loading{
+				position: fixed;
+				left: 0;
+				top: 0;
+				background: #eee;
+				text-align: center;
+				width: 100%;
+				height: 100%;
+				padding-top: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box"><img id="img" src="https://image.leyibx.com/news/978f057d4357680404c0574186f24f83.jpeg?x-oss-process=image/resize,w_500"/></div>
+		<div class="btns">
+			<button class="btn" data-control = "prev">上一页</button>
+			<button class="btn" data-control = "next">下一页</button>
+		</div>
+		<p class="loading">
+			<span class="progress">0%</span>
+		</p>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script>
+			var imgArr = [
+							"https://image.leyibx.com/news/978f057d4357680404c0574186f24f83.jpeg?x-oss-process=image/resize,w_500",
+							"https://image.leyibx.com/news/d8ff3c77eef3074265968b3661bb34a3.png?x-oss-process=image/resize,w_500",
+							"https://image.leyibx.com/news/ba5cda9ebdf731b74f0ec0c90c025bbe.jpeg?x-oss-process=image/resize,w_500",
+							"https://image.leyibx.com/news/9fccc78e9fd7c738a788468d92f1f1bc.jpeg?x-oss-process=image/resize,w_500"
+						 ];
+			var index= 0;
+			var len = imgArr.length;
+			var count= 0;//加载完的图片的数量
+			
+			$.each(imgArr,function(index,value){
+				var imgObj = new Image();
+				$(imgObj).on("load",function(){
+					count++;
+					$(".progress").html(Math.round(count/len*100)+"%");
+					if(count>=len)
+					{
+						$(".loading").hide();
+					}
+					
+				})
+				imgObj.src = value;
+			})
+			
+			$(".btn").on('click',function(){
+				if($(this).data('control')=='prev')
+				{
+					index = Math.max(0,--index);
+				}else{
+					index = Math.min(len-1,++index);
+				}
+				document.title = index+1+"/"+len;
+				$("#img").attr("src",imgArr[index]);
+			})
+			
+		</script>
+	</body>
+</html>
